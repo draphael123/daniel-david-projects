@@ -162,8 +162,10 @@ export function DatabaseTable({ columns, rows, onDataChange }: DatabaseTableProp
     const cell = row.cells.find(c => c.columnId === columnId)
     if (!cell || !cell.valueJson) return null
     try {
-      return JSON.parse(cell.valueJson)
-    } catch {
+      const parsed = JSON.parse(cell.valueJson)
+      return parsed
+    } catch (error) {
+      console.error('Failed to parse cell value:', cell.valueJson, error)
       return null
     }
   }

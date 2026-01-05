@@ -13,11 +13,19 @@ async function checkDatabaseConnection() {
 export default async function Home() {
   const dbConnected = await checkDatabaseConnection()
   
-  // Auto-seed if no columns exist
-  const columnCount = await prisma.column.count()
-  if (columnCount === 0) {
-    // This will be handled by the seed script, but we can trigger it here if needed
-    console.log('No columns found. Run: npm run db:seed')
+  // Auto-seed if no columns exist (only if DB is connected)
+  let needsSeeding = false
+  if (dbConnected) {
+    try {
+      const columnCount = await prisma.column.count()
+      if (columnCount === 0) {
+        needsSeeding = true
+        console.log('No columns found. Run: npm run db:seed')
+      }
+    } catch (error) {
+      console.error('Error checking column count:', error)
+      // Continue even if count check fails
+    }
   }
 
   return (

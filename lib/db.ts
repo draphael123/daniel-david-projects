@@ -1,7 +1,15 @@
 import { PrismaClient } from '@prisma/client'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
+}
+
+// Ensure DATABASE_URL is set with correct path
+if (!process.env.DATABASE_URL) {
+  const dbPath = path.join(process.cwd(), 'prisma', 'dev.db')
+  process.env.DATABASE_URL = `file:${dbPath}`
 }
 
 export const prisma =

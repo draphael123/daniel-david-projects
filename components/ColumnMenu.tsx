@@ -30,9 +30,13 @@ export function ColumnMenu({ column, onUpdate, onDelete }: ColumnMenuProps) {
 
   useEffect(() => {
     if (column.type === 'select' || column.type === 'multi_select') {
-      const settings = column.settingsJson as any
-      const options = settings?.options || []
-      setNewOptions(options.map((opt: any) => opt.label).join('\n'))
+      try {
+        const settings = column.settingsJson ? JSON.parse(column.settingsJson as string) : {}
+        const options = settings?.options || []
+        setNewOptions(options.map((opt: any) => opt.label).join('\n'))
+      } catch {
+        setNewOptions('')
+      }
     }
   }, [column])
 
@@ -229,9 +233,13 @@ export function ColumnMenu({ column, onUpdate, onDelete }: ColumnMenuProps) {
           <button
             onClick={() => {
               setShowOptionsEdit(false)
-              const settings = column.settingsJson as any
-              const options = settings?.options || []
-              setNewOptions(options.map((opt: any) => opt.label).join('\n'))
+              try {
+                const settings = column.settingsJson ? JSON.parse(column.settingsJson as string) : {}
+                const options = settings?.options || []
+                setNewOptions(options.map((opt: any) => opt.label).join('\n'))
+              } catch {
+                setNewOptions('')
+              }
             }}
             className="text-xs bg-gray-500 text-white px-2 py-1 rounded hover:bg-gray-600"
           >

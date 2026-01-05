@@ -98,7 +98,12 @@ export function CellEditor({
     }
 
     if (column.type === 'select' || column.type === 'multi_select') {
-      const settings = column.settingsJson as any
+      let settings: any = {}
+      try {
+        settings = column.settingsJson ? JSON.parse(column.settingsJson as string) : {}
+      } catch {
+        settings = {}
+      }
       const options = settings?.options || []
       
       if (column.type === 'multi_select') {

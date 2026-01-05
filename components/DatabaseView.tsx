@@ -22,7 +22,7 @@ interface Row {
     id: string
     rowId: string
     columnId: string
-    valueJson: any // Prisma Json type is already parsed
+    valueJson: string | null // SQLite stores JSON as string
     column: Column
   }>
 }
@@ -60,12 +60,16 @@ export function DatabaseView({ dbConnected }: { dbConnected: boolean }) {
     if (searchQuery) {
       const searchLower = searchQuery.toLowerCase()
       const matches = row.cells.some((cell) => {
-        if (cell.valueJson == null) return false
-        const value = cell.valueJson // Already parsed by Prisma
-        const str = Array.isArray(value) 
-          ? value.join(' ').toLowerCase()
-          : String(value).toLowerCase()
-        return str.includes(searchLower)
+        if (!cell.valueJson) return false
+        try {
+          const value = JSON.parse(cell.valueJson)
+          const str = Array.isArray(value) 
+            ? value.join(' ').toLowerCase()
+            : String(value).toLowerCase()
+          return str.includes(searchLower)
+        } catch {
+          return false
+        }
       })
       if (!matches) return false
     }
@@ -75,7 +79,12 @@ export function DatabaseView({ dbConnected }: { dbConnected: boolean }) {
       if (!cell || !cell.valueJson) {
         if (filter.operator !== 'is_empty') return false
       } else {
-        const value = cell.valueJson // Already parsed by Prisma
+        let value
+        try {
+          value = JSON.parse(cell.valueJson)
+        } catch {
+          return false
+        }
         switch (filter.operator) {
           case 'equals':
             return String(value) === filter.value

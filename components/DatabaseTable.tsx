@@ -25,7 +25,7 @@ interface Row {
     id: string
     rowId: string
     columnId: string
-    valueJson: any // Prisma Json type is already parsed
+    valueJson: string | null // SQLite stores JSON as string
     column: Column
   }>
 }
@@ -160,8 +160,13 @@ export function DatabaseTable({ columns, rows, onDataChange }: DatabaseTableProp
 
   const getCellValue = (row: Row, columnId: string) => {
     const cell = row.cells.find(c => c.columnId === columnId)
-    if (!cell || cell.valueJson == null) return null
-    return cell.valueJson // Already parsed by Prisma
+    if (!cell || !cell.valueJson) return null
+    try {
+      return JSON.parse(cell.valueJson)
+    } catch (error) {
+      console.error('Failed to parse cell value:', cell.valueJson, error)
+      return null
+    }
   }
 
   // Mobile view: card layout

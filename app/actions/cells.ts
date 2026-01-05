@@ -29,7 +29,9 @@ export async function updateCell(
       }
     }
 
-    // Upsert cell - Prisma Json type handles serialization automatically
+    // Upsert cell - SQLite stores JSON as string
+    const valueJson = parsedValue !== null ? JSON.stringify(parsedValue) : null
+    
     const cell = await prisma.cell.upsert({
       where: {
         rowId_columnId: {
@@ -38,12 +40,12 @@ export async function updateCell(
         },
       },
       update: {
-        valueJson: parsedValue,
+        valueJson,
       },
       create: {
         rowId,
         columnId,
-        valueJson: parsedValue,
+        valueJson,
       },
     })
 

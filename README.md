@@ -9,7 +9,7 @@ A production-ready Notion-style collaborative database for David and Daniel to m
 - 🔄 **Inline Editing**: Click any cell to edit, Enter to save, Esc to cancel
 - 🔍 **Search & Filter**: Powerful search across all columns and filter by column values
 - 📱 **Responsive Design**: Beautiful table view on desktop, card view on mobile
-- 💾 **Persistent Storage**: PostgreSQL database via Prisma ORM - data persists through redeploys
+- 💾 **Persistent Storage**: SQLite database - no external database setup required!
 - ✨ **Polish**: Smooth animations, toast notifications, confetti on column creation, loading states
 - 🎨 **Beautiful UI**: Colorful gradient header, emojis throughout, accessible design
 
@@ -17,85 +17,35 @@ A production-ready Notion-style collaborative database for David and Daniel to m
 
 - **Framework**: Next.js 14+ (App Router) with TypeScript
 - **Styling**: TailwindCSS
-- **Database**: PostgreSQL (Supabase or Neon recommended)
+- **Database**: SQLite (file-based, no external database needed)
 - **ORM**: Prisma
 - **Validation**: Zod
 - **UI Components**: React with server actions
 - **Notifications**: react-hot-toast
 - **Confetti**: canvas-confetti
 
-## Prerequisites
+## Quick Start
 
-- Node.js 18+ and npm/yarn/pnpm
-- A PostgreSQL database (free tiers available on [Supabase](https://supabase.com) or [Neon](https://neon.tech))
-- (Optional) Supabase account for magic link authentication
-
-## Setup
-
-### 1. Clone and Install
+### 1. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 2. Database Setup
-
-#### Option A: Using Neon (Recommended)
-
-1. Sign up at [neon.tech](https://neon.tech)
-2. Create a new project
-3. Copy the connection string (it should look like: `postgresql://user:password@host/dbname`)
-4. Add it to your `.env` file as `DATABASE_URL`
-
-#### Option B: Using Supabase
-
-1. Sign up at [supabase.com](https://supabase.com)
-2. Create a new project
-3. Go to Settings > Database
-4. Copy the connection string under "Connection string" > "URI"
-5. Add it to your `.env` file as `DATABASE_URL`
-
-### 3. Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-# Database
-DATABASE_URL="postgresql://user:password@host/dbname"
-
-# Optional: Supabase Auth (if using magic link authentication)
-NEXT_PUBLIC_SUPABASE_URL="your-supabase-url"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="your-supabase-anon-key"
-
-# Optional: Email allowlist for Supabase Auth
-ALLOWED_EMAILS="david@example.com,daniel@example.com"
-
-# Optional: Fallback shared passcode (if not using Supabase Auth)
-SHARED_PASSCODE="your-secret-passcode"
-```
-
-**Note**: If you don't set up Supabase Auth or a passcode, the app will allow access in development mode (not recommended for production).
-
-### 4. Database Migration and Seeding
+### 2. Initialize Database
 
 ```bash
-# Generate Prisma Client
+# Generate Prisma Client and create database
 npx prisma generate
-
-# Push schema to database (or use migrate for production)
 npx prisma db push
 
-# Seed the database with default columns and rows
+# Seed with default data
 npm run db:seed
 ```
 
-The seed script will create:
-- 10 default columns (Item, Owner, Status, Priority, Due Date, Next Step, Notes, Tags, Link, Done?)
-- 3 starter rows with sample data
+That's it! No environment variables, no external databases, no setup required! 🎉
 
-**Important**: The seed script only runs if no columns exist, so it's safe to run multiple times.
-
-### 5. Run Development Server
+### 3. Run Development Server
 
 ```bash
 npm run dev
@@ -103,109 +53,71 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Deployment to Vercel
+## How It Works
 
-### 1. Push to GitHub
+- **SQLite Database**: All data is stored in a local `dev.db` file in the `prisma` folder
+- **Zero Configuration**: No environment variables needed - just install and run
+- **Persistent**: Your data persists between app restarts
+- **Portable**: The database file can be easily backed up or shared
 
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git remote add origin your-repo-url
-git push -u origin main
-```
+## Database Location
 
-### 2. Deploy to Vercel
+The SQLite database is stored at: `prisma/dev.db`
 
-1. Go to [vercel.com](https://vercel.com) and sign in
-2. Click "New Project"
-3. Import your GitHub repository
-4. Add environment variables in Vercel dashboard:
-   - `DATABASE_URL`
-   - (Optional) `NEXT_PUBLIC_SUPABASE_URL`
-   - (Optional) `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - (Optional) `ALLOWED_EMAILS`
-   - (Optional) `SHARED_PASSCODE`
-
-### 3. Configure Build Settings
-
-Vercel should auto-detect Next.js, but ensure:
-- Build Command: `npm run build` (or `prisma generate && next build`)
-- Output Directory: `.next`
-
-### 4. Deploy
-
-Click "Deploy" and wait for the build to complete.
-
-### 5. Run Migrations in Production
-
-After first deployment, you may need to run migrations:
-
-```bash
-# Option 1: Via Vercel CLI
-vercel env pull .env.local
-npx prisma migrate deploy
-
-# Option 2: Via Supabase/Neon dashboard SQL editor
-# Copy the SQL from prisma/migrations folder and run it
-```
-
-### 6. Seed Production Database
-
-If you need to seed the production database:
-
-```bash
-# Set production DATABASE_URL in your local .env
-npx prisma db push
-npm run db:seed
-```
-
-Or use Prisma Studio to manually seed:
-
-```bash
-npx prisma studio
-```
-
-## Database Schema
-
-### Columns Table
-- `id`: Unique identifier
-- `name`: Column name
-- `type`: Column type (text, number, select, multi_select, date, checkbox, url)
-- `orderIndex`: Display order
-- `settingsJson`: Type-specific settings (e.g., select options)
-- `createdAt`, `updatedAt`: Timestamps
-
-### Rows Table
-- `id`: Unique identifier
-- `orderIndex`: Display order
-- `createdAt`, `updatedAt`: Timestamps
-
-### Cells Table
-- `id`: Unique identifier
-- `rowId`: Foreign key to row
-- `columnId`: Foreign key to column
-- `valueJson`: Cell value stored as JSON
-- `updatedAt`: Timestamp
+You can:
+- **Backup**: Simply copy the `dev.db` file
+- **Reset**: Delete `dev.db` and run `npx prisma db push` and `npm run db:seed` again
+- **Inspect**: Use `npm run db:studio` to view/edit data visually
 
 ## Available Scripts
 
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm start` - Start production server
-- `npm run db:push` - Push Prisma schema to database
+- `npm run db:push` - Push Prisma schema to database (create/update tables)
 - `npm run db:migrate` - Create and run migrations
 - `npm run db:seed` - Seed database with default data
 - `npm run db:studio` - Open Prisma Studio (database GUI)
 
+## Deployment
+
+### Local Production Build
+
+```bash
+npm run build
+npm start
+```
+
+### Vercel Deployment (Optional)
+
+**Note**: SQLite works great locally but has limitations on serverless platforms like Vercel. For production deployment, you may want to:
+
+1. Switch to PostgreSQL (see original setup) for serverless compatibility
+2. Or use a different hosting platform that supports file-based databases
+
+If deploying to Vercel, you'll need to:
+1. Set up a PostgreSQL database (Supabase, Neon, etc.)
+2. Change the datasource in `prisma/schema.prisma` to PostgreSQL
+3. Set `DATABASE_URL` environment variable
+
 ## Troubleshooting
 
-### Database Connection Issues
+### Database File Not Found
 
-- Verify your `DATABASE_URL` is correct
-- Check if your database allows connections from your IP (some free tiers restrict connections)
-- For Neon: Ensure your connection pooling mode is set correctly
-- For Supabase: Use the connection pooler URL if available
+```bash
+npx prisma db push
+```
+
+### Reset Database
+
+```bash
+# Delete the database file
+rm prisma/dev.db
+
+# Recreate it
+npx prisma db push
+npm run db:seed
+```
 
 ### Prisma Client Not Generated
 
@@ -213,50 +125,14 @@ npx prisma studio
 npx prisma generate
 ```
 
-### Migration Issues
-
-If you get migration errors, try:
-
-```bash
-npx prisma migrate reset  # WARNING: This deletes all data!
-npx prisma migrate dev
-```
-
-Or use `db push` for development:
-
-```bash
-npx prisma db push
-```
-
-### Seed Script Not Running
-
-The seed script only runs if no columns exist. To re-seed:
-
-1. Manually delete columns via Prisma Studio: `npx prisma studio`
-2. Or truncate tables via SQL:
-   ```sql
-   TRUNCATE TABLE "cells" CASCADE;
-   TRUNCATE TABLE "rows" CASCADE;
-   TRUNCATE TABLE "columns" CASCADE;
-   ```
-
-### Build Errors on Vercel
-
-- Ensure `DATABASE_URL` is set in Vercel environment variables
-- Check that Prisma is generating correctly: add `prisma generate` to build command
-- Verify all dependencies are in `package.json`
-
-### Authentication Issues
-
-- If using Supabase Auth, ensure URLs and keys are correct
-- If using passcode, ensure `SHARED_PASSCODE` is set
-- Check browser console for auth errors
-
 ## Data Persistence
 
-✅ **Data persists through redeploys** - All data is stored in your PostgreSQL database. As long as your database connection string remains the same, your data will be safe.
+✅ **Data persists locally** - All data is stored in `prisma/dev.db`. As long as you don't delete this file, your data is safe.
 
-⚠️ **Important**: Never commit your `.env` file or database credentials to version control!
+⚠️ **Important**: 
+- Back up `prisma/dev.db` regularly
+- Don't commit `*.db` files to git (they're in `.gitignore`)
+- If sharing the database, copy the `dev.db` file
 
 ## License
 
@@ -269,4 +145,3 @@ For issues or questions, check the troubleshooting section above or review the c
 ---
 
 Built with ❤️ by David and Daniel
-

@@ -27,7 +27,7 @@ export async function createColumn(formData: FormData) {
       type,
       orderIndex,
       settingsJson: type === 'select' || type === 'multi_select' 
-        ? { options: [] } 
+        ? JSON.stringify({ options: [] })
         : null,
     })
 
@@ -55,8 +55,10 @@ export async function updateColumn(id: string, formData: FormData) {
     if (type) updateData.type = type
     if (orderIndex) updateData.orderIndex = parseInt(orderIndex)
     if (settingsJsonStr) {
+      // SQLite stores JSON as string, validate it's valid JSON
       try {
-        updateData.settingsJson = JSON.parse(settingsJsonStr)
+        JSON.parse(settingsJsonStr)
+        updateData.settingsJson = settingsJsonStr
       } catch {
         // Invalid JSON, skip
       }

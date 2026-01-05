@@ -81,7 +81,7 @@ export async function duplicateRow(id: string) {
         cells: {
           create: row.cells.map((cell) => ({
             columnId: cell.columnId,
-            valueJson: cell.valueJson as any, // Prisma JsonValue type
+            valueJson: cell.valueJson, // SQLite stores as string
           })),
         },
       },

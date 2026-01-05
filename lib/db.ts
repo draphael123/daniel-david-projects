@@ -10,11 +10,10 @@ export const prisma =
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })
 
-// Prevent multiple instances in serverless environments (Vercel)
+// Prevent multiple instances in serverless environments
 if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma
 } else {
-  // In production, also use singleton to prevent connection pool exhaustion
   globalForPrisma.prisma = prisma
 }
 

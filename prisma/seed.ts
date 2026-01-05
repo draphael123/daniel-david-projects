@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -19,68 +19,68 @@ async function main() {
       name: 'Item',
       type: 'text',
       orderIndex: 0,
-      settingsJson: Prisma.JsonNull,
+      settingsJson: null,
     },
     {
       name: 'Owner',
       type: 'select',
       orderIndex: 1,
-      settingsJson: {
+      settingsJson: JSON.stringify({
         options: [
           { label: 'David', color: 'teal' },
           { label: 'Daniel', color: 'purple' },
         ],
-      },
+      }),
     },
     {
       name: 'Status',
       type: 'select',
       orderIndex: 2,
-      settingsJson: {
+      settingsJson: JSON.stringify({
         options: [
           { label: 'Backlog', color: 'gray' },
           { label: 'In Progress', color: 'yellow' },
           { label: 'Blocked', color: 'red' },
           { label: 'Done', color: 'green' },
         ],
-      },
+      }),
     },
     {
       name: 'Priority',
       type: 'select',
       orderIndex: 3,
-      settingsJson: {
+      settingsJson: JSON.stringify({
         options: [
           { label: 'Low', color: 'gray' },
           { label: 'Medium', color: 'blue' },
           { label: 'High', color: 'orange' },
           { label: 'Urgent', color: 'red' },
         ],
-      },
+      }),
     },
     {
       name: 'Due Date',
       type: 'date',
       orderIndex: 4,
-      settingsJson: Prisma.JsonNull,
+      settingsJson: null,
     },
     {
       name: 'Next Step',
       type: 'text',
       orderIndex: 5,
-      settingsJson: Prisma.JsonNull,
+      settingsJson: null,
     },
     {
       name: 'Notes',
       type: 'text',
       orderIndex: 6,
-      settingsJson: Prisma.JsonNull,
+      settingsJson: null,
     },
     {
       name: 'Tags',
       type: 'multi_select',
       orderIndex: 7,
-      settingsJson: {
+      settingsJson: JSON.stringify({
         options: [
           { label: 'Ops', color: 'blue' },
           { label: 'Tech', color: 'purple' },
@@ -88,19 +88,19 @@ async function main() {
           { label: 'Compliance', color: 'red' },
           { label: 'Personal', color: 'pink' },
         ],
-      },
+      }),
     },
     {
       name: 'Link',
       type: 'url',
       orderIndex: 8,
-      settingsJson: Prisma.JsonNull,
+      settingsJson: null,
     },
     {
       name: 'Done?',
       type: 'checkbox',
       orderIndex: 9,
-      settingsJson: Prisma.JsonNull,
+      settingsJson: null,
     },
   ]
 
@@ -123,31 +123,31 @@ async function main() {
         create: [
           {
             columnId: columns[0].id, // Item
-            valueJson: 'Set up shared tracker',
+            valueJson: JSON.stringify('Set up shared tracker'),
           },
           {
             columnId: columns[1].id, // Owner
-            valueJson: 'Daniel',
+            valueJson: JSON.stringify('Daniel'),
           },
           {
             columnId: columns[2].id, // Status
-            valueJson: 'Done',
+            valueJson: JSON.stringify('Done'),
           },
           {
             columnId: columns[3].id, // Priority
-            valueJson: 'Medium',
+            valueJson: JSON.stringify('Medium'),
           },
           {
             columnId: columns[5].id, // Next Step
-            valueJson: 'Add your real tasks',
+            valueJson: JSON.stringify('Add your real tasks'),
           },
           {
             columnId: columns[7].id, // Tags
-            valueJson: ['Tech'],
+            valueJson: JSON.stringify(['Tech']),
           },
           {
             columnId: columns[9].id, // Done?
-            valueJson: true,
+            valueJson: JSON.stringify(true),
           },
         ],
       },
@@ -162,27 +162,27 @@ async function main() {
         create: [
           {
             columnId: columns[0].id, // Item
-            valueJson: 'Add first real project list',
+            valueJson: JSON.stringify('Add first real project list'),
           },
           {
             columnId: columns[1].id, // Owner
-            valueJson: 'David',
+            valueJson: JSON.stringify('David'),
           },
           {
             columnId: columns[2].id, // Status
-            valueJson: 'In Progress',
+            valueJson: JSON.stringify('In Progress'),
           },
           {
             columnId: columns[3].id, // Priority
-            valueJson: 'High',
+            valueJson: JSON.stringify('High'),
           },
           {
             columnId: columns[4].id, // Due Date
-            valueJson: sevenDaysLater.toISOString().split('T')[0],
+            valueJson: JSON.stringify(sevenDaysLater.toISOString().split('T')[0]),
           },
           {
             columnId: columns[7].id, // Tags
-            valueJson: ['Ops'],
+            valueJson: JSON.stringify(['Ops']),
           },
         ],
       },
@@ -197,23 +197,23 @@ async function main() {
         create: [
           {
             columnId: columns[0].id, // Item
-            valueJson: 'Agree on weekly review cadence',
+            valueJson: JSON.stringify('Agree on weekly review cadence'),
           },
           {
             columnId: columns[1].id, // Owner
-            valueJson: 'David',
+            valueJson: JSON.stringify('David'),
           },
           {
             columnId: columns[2].id, // Status
-            valueJson: 'Backlog',
+            valueJson: JSON.stringify('Backlog'),
           },
           {
             columnId: columns[3].id, // Priority
-            valueJson: 'Medium',
+            valueJson: JSON.stringify('Medium'),
           },
           {
             columnId: columns[7].id, // Tags
-            valueJson: ['Personal'],
+            valueJson: JSON.stringify(['Personal']),
           },
         ],
       },

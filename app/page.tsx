@@ -3,10 +3,18 @@ import { prisma } from '@/lib/db'
 
 async function checkDatabaseConnection() {
   try {
+    // SQLite-specific check
     await prisma.$queryRaw`SELECT 1`
     return true
-  } catch {
-    return false
+  } catch (error) {
+    console.error('Database connection error:', error)
+    // If database doesn't exist, try to create it
+    try {
+      await prisma.$executeRaw`SELECT 1`
+      return true
+    } catch {
+      return false
+    }
   }
 }
 

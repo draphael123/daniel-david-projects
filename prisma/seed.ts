@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -19,7 +19,7 @@ async function main() {
       name: 'Item',
       type: 'text',
       orderIndex: 0,
-      settingsJson: null,
+      settingsJson: Prisma.JsonNull,
     },
     {
       name: 'Owner',
@@ -62,19 +62,19 @@ async function main() {
       name: 'Due Date',
       type: 'date',
       orderIndex: 4,
-      settingsJson: null,
+      settingsJson: Prisma.JsonNull,
     },
     {
       name: 'Next Step',
       type: 'text',
       orderIndex: 5,
-      settingsJson: null,
+      settingsJson: Prisma.JsonNull,
     },
     {
       name: 'Notes',
       type: 'text',
       orderIndex: 6,
-      settingsJson: null,
+      settingsJson: Prisma.JsonNull,
     },
     {
       name: 'Tags',
@@ -94,13 +94,13 @@ async function main() {
       name: 'Link',
       type: 'url',
       orderIndex: 8,
-      settingsJson: null,
+      settingsJson: Prisma.JsonNull,
     },
     {
       name: 'Done?',
       type: 'checkbox',
       orderIndex: 9,
-      settingsJson: null,
+      settingsJson: Prisma.JsonNull,
     },
   ]
 

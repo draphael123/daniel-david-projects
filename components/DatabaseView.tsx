@@ -42,8 +42,8 @@ export function DatabaseView({ dbConnected }: { dbConnected: boolean }) {
         getRows(),
       ])
 
-      if (colsRes.success) setColumns(colsRes.data)
-      if (rowsRes.success) setRows(rowsRes.data)
+      if (colsRes.success && colsRes.data) setColumns(colsRes.data as any)
+      if (rowsRes.success && rowsRes.data) setRows(rowsRes.data as any)
     } catch (error) {
       console.error('Error loading data:', error)
     } finally {

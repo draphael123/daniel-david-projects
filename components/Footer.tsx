@@ -21,7 +21,7 @@ export function Footer() {
               <li>✨ <strong>Dynamic Columns:</strong> Add, edit, reorder, and customize column types (text, numbers, dates, selects, checkboxes, URLs, and more)</li>
               <li>🧩 <strong>Collaborative Editing:</strong> Both users can add, edit, and delete rows in real-time</li>
               <li>💾 <strong>Persistent Storage:</strong> All data is stored in a PostgreSQL database and persists through redeploys - no data loss!</li>
-              <li>🔍 <strong>Search & Filter:</strong> Quickly find what you're looking for with powerful search and filter capabilities</li>
+              <li>🔍 <strong>Search & Filter:</strong> Quickly find what you&apos;re looking for with powerful search and filter capabilities</li>
               <li>📱 <strong>Mobile Friendly:</strong> Responsive design that works beautifully on desktop and mobile devices</li>
             </ul>
             <p className="text-gray-700 leading-relaxed">

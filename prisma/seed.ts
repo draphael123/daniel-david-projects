@@ -123,31 +123,31 @@ async function main() {
         create: [
           {
             columnId: columns[0].id, // Item
-            valueJson: JSON.stringify('Set up shared tracker'),
+            valueJson: 'Set up shared tracker',
           },
           {
             columnId: columns[1].id, // Owner
-            valueJson: JSON.stringify('Daniel'),
+            valueJson: 'Daniel',
           },
           {
             columnId: columns[2].id, // Status
-            valueJson: JSON.stringify('Done'),
+            valueJson: 'Done',
           },
           {
             columnId: columns[3].id, // Priority
-            valueJson: JSON.stringify('Medium'),
+            valueJson: 'Medium',
           },
           {
             columnId: columns[5].id, // Next Step
-            valueJson: JSON.stringify('Add your real tasks'),
+            valueJson: 'Add your real tasks',
           },
           {
             columnId: columns[7].id, // Tags
-            valueJson: JSON.stringify(['Tech']),
+            valueJson: ['Tech'],
           },
           {
             columnId: columns[9].id, // Done?
-            valueJson: JSON.stringify(true),
+            valueJson: true,
           },
         ],
       },
@@ -162,27 +162,27 @@ async function main() {
         create: [
           {
             columnId: columns[0].id, // Item
-            valueJson: JSON.stringify('Add first real project list'),
+            valueJson: 'Add first real project list',
           },
           {
             columnId: columns[1].id, // Owner
-            valueJson: JSON.stringify('David'),
+            valueJson: 'David',
           },
           {
             columnId: columns[2].id, // Status
-            valueJson: JSON.stringify('In Progress'),
+            valueJson: 'In Progress',
           },
           {
             columnId: columns[3].id, // Priority
-            valueJson: JSON.stringify('High'),
+            valueJson: 'High',
           },
           {
             columnId: columns[4].id, // Due Date
-            valueJson: JSON.stringify(sevenDaysLater.toISOString().split('T')[0]),
+            valueJson: sevenDaysLater.toISOString().split('T')[0],
           },
           {
             columnId: columns[7].id, // Tags
-            valueJson: JSON.stringify(['Ops']),
+            valueJson: ['Ops'],
           },
         ],
       },
@@ -197,23 +197,23 @@ async function main() {
         create: [
           {
             columnId: columns[0].id, // Item
-            valueJson: JSON.stringify('Agree on weekly review cadence'),
+            valueJson: 'Agree on weekly review cadence',
           },
           {
             columnId: columns[1].id, // Owner
-            valueJson: JSON.stringify('David'),
+            valueJson: 'David',
           },
           {
             columnId: columns[2].id, // Status
-            valueJson: JSON.stringify('Backlog'),
+            valueJson: 'Backlog',
           },
           {
             columnId: columns[3].id, // Priority
-            valueJson: JSON.stringify('Medium'),
+            valueJson: 'Medium',
           },
           {
             columnId: columns[7].id, // Tags
-            valueJson: JSON.stringify(['Personal']),
+            valueJson: ['Personal'],
           },
         ],
       },

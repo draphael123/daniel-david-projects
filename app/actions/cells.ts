@@ -29,9 +29,7 @@ export async function updateCell(
       }
     }
 
-    const valueJson = parsedValue !== null ? JSON.stringify(parsedValue) : null
-
-    // Upsert cell
+    // Upsert cell - Prisma Json type handles serialization automatically
     const cell = await prisma.cell.upsert({
       where: {
         rowId_columnId: {
@@ -40,12 +38,12 @@ export async function updateCell(
         },
       },
       update: {
-        valueJson,
+        valueJson: parsedValue,
       },
       create: {
         rowId,
         columnId,
-        valueJson,
+        valueJson: parsedValue,
       },
     })
 

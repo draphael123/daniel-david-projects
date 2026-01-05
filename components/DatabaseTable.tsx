@@ -25,7 +25,7 @@ interface Row {
     id: string
     rowId: string
     columnId: string
-    valueJson: string | null
+    valueJson: any // Prisma Json type is already parsed
     column: Column
   }>
 }
@@ -160,14 +160,8 @@ export function DatabaseTable({ columns, rows, onDataChange }: DatabaseTableProp
 
   const getCellValue = (row: Row, columnId: string) => {
     const cell = row.cells.find(c => c.columnId === columnId)
-    if (!cell || !cell.valueJson) return null
-    try {
-      const parsed = JSON.parse(cell.valueJson)
-      return parsed
-    } catch (error) {
-      console.error('Failed to parse cell value:', cell.valueJson, error)
-      return null
-    }
+    if (!cell || cell.valueJson == null) return null
+    return cell.valueJson // Already parsed by Prisma
   }
 
   // Mobile view: card layout
